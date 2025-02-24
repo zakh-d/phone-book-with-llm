@@ -3,3 +3,24 @@ services:
     build: backend
     ports:
       - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17.2-alpine3.21
+    environment:
+      POSTGRES_DB: ${CONTACTS_DB}
+      POSTGRES_USER: ${CONTACTS_DB_USER}
+      POSTGRES_PASSWORD: ${CONTACTS_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - contacts-db-data:/var/lib/postgresql/data
+    ports:
+      - "5555:5432"
+volumes:
+  contacts-db-data:
+
