@@ -3,6 +3,12 @@ services:
     build: backend
     ports:
       - "8000:8000"
+    environment:
+      CONTACTS_DB: ${CONTACTS_DB}
+      CONTACTS_DB_USER: ${CONTACTS_DB_USER}
+      CONTACTS_DB_PASSWORD: ${CONTACTS_DB_PASSWORD}
+      CONTACTS_DB_PORT: 5432
+      CONTACTS_DB_HOST: db
     depends_on:
       db:
         condition: service_healthy
