@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Contact, ContactWithId } from "../types/contact";
 
 export const contactsApi = createApi({
@@ -31,10 +31,15 @@ export const contactsApi = createApi({
                 method: 'PUT',
                 body: {
                     name: contact.name,
-                    phone: contact.phone
+                    phone_number: contact.phone_number
                 }
             }),
             invalidatesTags: [{ type: 'Contact', id: 'LIST' }]
         })
     })
-})
+});
+
+
+export const {
+    useGetContactsQuery
+} = contactsApi;

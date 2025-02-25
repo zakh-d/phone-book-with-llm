@@ -1,6 +1,6 @@
 export interface Contact {
     name: string;
-    phone: string;
+    phone_number: string;
 }
 
 export interface ContactWithId extends Contact {

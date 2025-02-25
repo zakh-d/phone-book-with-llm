@@ -1,8 +1,13 @@
-function App() {
+import ContactList from "../ContactList/ContactList"
 
-  return (
-    <h1>Phonebook</h1>
-  )
+function App() {
+	return (
+		<>
+			<h1>Phonebook</h1>
+			<ContactList/>
+		</>
+
+	)
 }
 
 export default App
