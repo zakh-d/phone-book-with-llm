@@ -13,7 +13,7 @@ const ContactListItem = ({ contact }: { contact: ContactWithId }) => {
             <Accordion.Item eventKey={contact.id}>
                 <Accordion.Header>{contact.name}</Accordion.Header>
                 <Accordion.Body>
-                    {deleteMode && <b className="text-danger">Confirm contact deletion</b>}
+                    {deleteMode && <b className="text-danger">Delete contact {contact.name}?</b>}
                     <div className="d-flex justify-content-between align-items-center">
                         <span className={deleteMode ? "text-danger" : ""}>{contact.phone_number}</span>
                         <div>
@@ -21,14 +21,15 @@ const ContactListItem = ({ contact }: { contact: ContactWithId }) => {
 
                                 deleteMode ?
                                     (<>
-                                        <Button variant="danger" className="me-1" onClick={() => {
+                                        <Button variant="secondary" className="me-1" onClick={() => setDeleteMode(false)}>
+                                            <BsXOctagon />
+                                        </Button>
+
+                                        <Button variant="danger" onClick={() => {
                                             deleteContact(contact.id);
                                             setDeleteMode(false);
                                         }}>
                                             <BsPatchCheck />
-                                        </Button>
-                                        <Button variant="secondary" onClick={() => setDeleteMode(false)}>
-                                            <BsXOctagon />
                                         </Button>
                                     </>) :
                                     (<>
