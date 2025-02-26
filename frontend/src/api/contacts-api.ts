@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Contact, ContactWithId } from "../types/contact";
 
+const apiURL = import.meta.env.VITE_API_URL;
+
 export const contactsApi = createApi({
     reducerPath: 'contactsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/contacts' }), // TODO: change it to env variable
+    baseQuery: fetchBaseQuery({ baseUrl: apiURL + '/api/contacts' }), // TODO: change it to env variable
     tagTypes: ['Contact'],
     endpoints: (builder) => ({
         getContacts: builder.query<ContactWithId[], void>({
