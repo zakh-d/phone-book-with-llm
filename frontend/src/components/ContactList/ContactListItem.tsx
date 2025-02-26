@@ -4,10 +4,12 @@ import Button from "react-bootstrap/esm/Button";
 import { useDeleteContactMutation } from "../../api/contacts-api";
 import { useState } from "react";
 import { BsPatchCheck, BsPen, BsTrash, BsXOctagon } from "react-icons/bs";
+import UpdateContactModal from "../ContactModal/UpdateContactModal";
 
 const ContactListItem = ({ contact }: { contact: ContactWithId }) => {
     const [deleteContact, { }] = useDeleteContactMutation();
     const [deleteMode, setDeleteMode] = useState(false);
+    const [updateModalShow, setUpdateModalShow] = useState(false);
     return (
         <>
             <Accordion.Item eventKey={contact.id}>
@@ -33,7 +35,7 @@ const ContactListItem = ({ contact }: { contact: ContactWithId }) => {
                                         </Button>
                                     </>) :
                                     (<>
-                                        <Button className="me-1">
+                                        <Button className="me-1" onClick={() => setUpdateModalShow(true)}>
                                             <BsPen />
                                         </Button>
                                         <Button variant="danger" onClick={() => setDeleteMode(true)}>
@@ -46,6 +48,7 @@ const ContactListItem = ({ contact }: { contact: ContactWithId }) => {
                     </div>
                 </Accordion.Body>
             </Accordion.Item>
+            <UpdateContactModal contact={contact} show={updateModalShow} handleClose={() => setUpdateModalShow(false)} />
         </>
     )
 };
