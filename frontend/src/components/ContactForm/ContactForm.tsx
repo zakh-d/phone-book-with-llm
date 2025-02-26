@@ -5,10 +5,11 @@ import { Formik } from "formik"
 
 type ContactFormProps = {
     contact?: Contact,
-    onSubmit: (contact: Contact) => void
+    onSubmit: (contact: Contact) => void,
+    afterSubmit?: () => void
 }
 
-const ContactForm = ({ contact, onSubmit }: ContactFormProps) => {
+const ContactForm = ({ contact, onSubmit, afterSubmit}: ContactFormProps) => {
     return (
         <Formik
             initialValues={{
@@ -32,9 +33,12 @@ const ContactForm = ({ contact, onSubmit }: ContactFormProps) => {
                 }
                 return errors;
             }}
-            onSubmit={onSubmit}
+            onSubmit={(values) => {
+                onSubmit(values);
+                afterSubmit && afterSubmit();
+             }}
         >
-            {({ values, handleChange, handleSubmit, handleBlur, isValid, errors, touched, dirty }) => (
+            {({ values, handleChange, handleSubmit, handleBlur, isValid, errors, touched }) => (
                 <Form onSubmit={handleSubmit}>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
@@ -48,7 +52,7 @@ const ContactForm = ({ contact, onSubmit }: ContactFormProps) => {
                     </Form.Group>
 
                     {/* !! means converting to boolean */}
-                    <Button type="submit" className="mt-2 w-100" disabled={!(dirty && isValid)}>
+                    <Button type="submit" className="mt-2 w-100" disabled={!(values.name !== "" && values.phone_number !== "" && isValid)}>
                         Submit
                     </Button>
                 </Form>

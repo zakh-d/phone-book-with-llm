@@ -14,7 +14,7 @@ const UpdateContactModal = ({contact, show, handleClose}: ContactModalProps) => 
             <Modal onHide={handleClose} show={show}>
                 <Modal.Title className="text-center">Update {contact.name} contact</Modal.Title>
                 <Modal.Body>
-                    <ContactUpdateForm initialContact={contact} />
+                    <ContactUpdateForm initialContact={contact} afterSubmit={handleClose}/>
                 </Modal.Body>
             </Modal>
         </>
