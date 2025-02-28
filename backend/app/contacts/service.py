@@ -19,6 +19,9 @@ class ContactService:
 
     async def get(self, contact_id: UUID) -> Contact | None:
         return await self._repository.get(contact_id)
+    
+    async def get_by_name(self, name: str) -> Sequence[Contact]:
+        return await self._repository.get_by_name(name)
 
     async def get_all(self) -> Sequence[Contact]:
         return await self._repository.get_all()

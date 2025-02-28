@@ -19,6 +19,11 @@ class ContactRepository:
     async def get(self, contact_id: UUID) -> Contact | None:
         return await self._session.get(Contact, contact_id)
 
+    async def get_by_name(self, name: str) -> Sequence[Contact]:
+        query = select(Contact).where(Contact.name == name)
+        results = await self._session.execute(query)
+        return results.scalars().all()
+
     async def get_all(self) -> Sequence[Contact]:
         results = await self._session.execute(select(Contact))
         return results.scalars().all()

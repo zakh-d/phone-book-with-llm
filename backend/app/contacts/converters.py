@@ -9,7 +9,15 @@ def contact_to_contact_out(contact: Contact) -> ContactOut:
         phone_number=contact.phone_number,
     )
 
-def contact_in_to_contact(contact_in: ContactIn ) -> Contact:
+
+def contact_to_contact_in(contact: Contact) -> ContactIn:
+    return ContactIn(
+        name=contact.name,
+        phone_number=contact.phone_number,
+    )
+
+
+def contact_in_to_contact(contact_in: ContactIn) -> Contact:
     return Contact(
         name=contact_in.name,
         phone_number=contact_in.phone_number,
