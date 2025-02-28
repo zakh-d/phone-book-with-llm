@@ -1,12 +1,12 @@
 from typing import Sequence
 from uuid import UUID
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.contacts.converters import contact_in_to_contact
-
+from .converters import contact_in_to_contact
+from .model import Contact
 from .repository import ContactRepository
 from .schemas import ContactIn
-from .model import Contact
 
 
 class ContactService:

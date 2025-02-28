@@ -11,6 +11,9 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: str = "dev"
 
+    OLLAMA_URL: str = "http://localhost:11434"
+    LLM_MODEL: str = "phonebook-llm"
+
     @property
     def postgres_dsn(self: "Settings") -> str:
         return (

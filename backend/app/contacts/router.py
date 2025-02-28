@@ -3,11 +3,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.contacts.service import ContactService
 from app.deps import get_contact_service
 
+from .converters import contact_to_contact_out
 from .schemas import ContactIn, ContactOut
-from .converters import contact_in_to_contact, contact_to_contact_out
+from .service import ContactService
 
 router = APIRouter()
 
