@@ -7,6 +7,10 @@ services:
       CONTACTS_DB_PASSWORD: ${CONTACTS_DB_PASSWORD}
       CONTACTS_DB_PORT: 5432
       CONTACTS_DB_HOST: db
+      ENVIRONMENT: prod
+      OLLAMA_URL: http://ollama:11434
+      LLM_MODEL: phonebook-llm
+
     depends_on:
       db:
         condition: service_healthy
@@ -23,6 +27,8 @@ services:
       - backend
   db:
     image: postgres:17.2-alpine3.21
+    ports:
+      - "5555:5432"
     environment:
       POSTGRES_DB: ${CONTACTS_DB}
       POSTGRES_USER: ${CONTACTS_DB_USER}
@@ -34,6 +40,11 @@ services:
       retries: 10
     volumes:
       - contacts-db-data:/var/lib/postgresql/data
+  ollama:
+    build: llm
+    volumes:
+      - contacts-llm-data:/root/.ollama
 volumes:
   contacts-db-data:
+  contacts-llm-data:
 
