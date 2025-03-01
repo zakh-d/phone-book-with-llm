@@ -37,15 +37,12 @@ class LLMService:
             [contact_to_contact_in(contact).model_dump() for contact in contacts]
         )
 
-        print(contacts_json)
-
         return await self._llm_repository.generate_response(
             GET_ACTION_RESPONSE_PROMTP_TEMPLATE.format(prompt, contacts_json)
         )
 
     async def process_user_prompt(self, prompt: str) -> str:
         response = await self._llm_repository.parse_user_prompt_to_json(prompt)
-        print(response)
         if response is None:
             return "No response from LLM"
 

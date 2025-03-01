@@ -37,7 +37,7 @@ class LLMRepository:
                 settings.OLLAMA_URL + "/api/generate",
                 timeout=None,
                 json={
-                    "model": settings.PROMPT_PARSING_MODEL,
+                    "model": settings.LLM_MODEL,
                     "prompt": prompt + "\n Response using JSON",
                     "stream": False,
                     "format": self.ACTION_SCHEMA,
@@ -54,7 +54,7 @@ class LLMRepository:
                 settings.OLLAMA_URL + "/api/generate",
                 timeout=None,
                 json={
-                    "model": settings.RESPONSE_GENERATING_MODEL,
+                    "model": settings.LLM_MODEL,
                     "prompt": prompt,
                     "stream": False,
                 },
