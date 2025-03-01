@@ -7,7 +7,7 @@ from app.llm.service import LLMService
 
 router = APIRouter()
 
-@router.post("/process")
+@router.post("/process/")
 async def process_user_prompt(user_prompt: UserPrompt, llm_service: Annotated[LLMService, Depends(get_llm_service)]):
     message = await llm_service.process_user_prompt(user_prompt.prompt)
 

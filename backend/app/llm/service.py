@@ -65,4 +65,18 @@ class LLMService:
             contacts = await self._contact_service.get_all()
             return await self.generate_response_for_found_contacts(prompt, contacts)
 
+        if action == "update":
+            if payload and payload.get("name"):
+                contacts_with_matching_name = await self._contact_service.get_by_name(payload.get("name"))
+                for contact in contacts_with_matching_name:
+                    await self._contact_service.update(contact.id, ContactIn.model_validate(payload))
+                return "Contact updated"
+
+        if action == "delete":
+            if payload and payload.get("name"):
+                contacts_with_matching_name = await self._contact_service.get_by_name(payload.get("name"))
+                for contact in contacts_with_matching_name:
+                    await self._contact_service.delete(contact.id)
+                return "Contact deleted"
+
         return "Action not supported"
