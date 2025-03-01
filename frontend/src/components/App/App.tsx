@@ -6,6 +6,7 @@ import CreateContactModal from "../ContactModal/CreateContactModal";
 import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import './app.css'
+import Chat from "../Chat/Chat";
 
 function App() {
 	const [createContactModalShow, setCreateContactModalShow] = useState(false);
@@ -21,6 +22,9 @@ function App() {
 						<ContactList />
 					</div>
 					<Button className="w-100 mb-2" onClick={() => setCreateContactModalShow(true)}>Add contact</Button>
+				</Col>
+				<Col sm={8}>
+					<Chat/>
 				</Col>
 			</Row>
 			<CreateContactModal show={createContactModalShow} handleClose={() => setCreateContactModalShow(false)} />
