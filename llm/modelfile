@@ -76,6 +76,34 @@ MESSAGE assistant """
 Joanna’s phone number is 123456789
 """
 
+MESSAGE user """Do I have Joanna in my contacts? Respond using JSON"""
+MESSAGE assistant """
+{
+    "action": "get",
+    "payload": {
+        "name": "Joanna",
+    }
+}
+"""
+
+MESSAGE user """
+Generate a response for the following user prompt: Do I have Joanna in my contacts?
+
+The system found following contacts in the database: 
+[
+    {
+        "name": "Joanna",
+        "phone_number": "123456789"
+    }
+]
+
+Generate textual response using json data from database that would match user prompt.
+
+Return response only, no explanation needed.
+"""
+MESSAGE assistant """
+Yes, you have Joanna in your contacts. Her phone number is 123456789
+"""
 
 MESSAGE user """Show me full phone book. Respond using JSON"""
 MESSAGE assistant  """
