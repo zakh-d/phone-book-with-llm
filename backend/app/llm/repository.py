@@ -45,7 +45,7 @@ class LLMRepository:
             )
             try:
                 return json.loads(response.json().get("response"))
-            except json.JSONDecodeError:
+            except (json.JSONDecodeError, TypeError):
                 return None
 
     async def generate_response(self, prompt: str) -> str:
