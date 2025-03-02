@@ -20,12 +20,12 @@ class ContactRepository:
         return await self._session.get(Contact, contact_id)
 
     async def get_by_name(self, name: str) -> Sequence[Contact]:
-        query = select(Contact).where(Contact.name == name)
+        query = select(Contact).where(Contact.name == name).order_by(Contact.name)
         results = await self._session.execute(query)
         return results.scalars().all()
 
     async def get_all(self) -> Sequence[Contact]:
-        results = await self._session.execute(select(Contact))
+        results = await self._session.execute(select(Contact).order_by(Contact.name))
         return results.scalars().all()
 
     async def delete(self, contact: Contact) -> None:

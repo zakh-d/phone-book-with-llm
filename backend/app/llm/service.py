@@ -38,6 +38,18 @@ Generate a textual response for the following user prompt: {}
 The system could not find any contacts with the given name inform user to try again with a different name.
 """
 
+CONTACT_UPDATED_RESPONSE_PROMPT = """
+Generate a textual response for the following user prompt: {}
+
+The system has updated the contact.
+"""
+
+CONTACT_DELETED_RESPONSE_PROMPT = """
+Generate a textual response for the following user prompt: {}
+
+The system has deleted the contact.
+"""
+
 
 class LLMService:
     def __init__(self, contact_service: ContactService):
@@ -96,7 +108,9 @@ class LLMService:
                     await self._contact_service.update(
                         contact.id, ContactIn.model_validate(payload)
                     )
-                return "Contact updated"
+                return await self._llm_repository.generate_response( 
+                    CONTACT_UPDATED_RESPONSE_PROMPT.format(prompt)
+                )
 
         if action == "delete":
             if payload and payload.get("name"):
@@ -109,7 +123,9 @@ class LLMService:
                     )
                 for contact in contacts_with_matching_name:
                     await self._contact_service.delete(contact.id)
-                return "Contact deleted"
+                return await self._llm_repository.generate_response(
+                    CONTACT_DELETED_RESPONSE_PROMPT.format(prompt)
+                )
 
         return await self._llm_repository.generate_response(
             ACTION_NOT_SUPPORTED_RESPONSE_PROMPT.format(prompt)
