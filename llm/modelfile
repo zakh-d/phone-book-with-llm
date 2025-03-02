@@ -17,6 +17,15 @@ MESSAGE assistant """
 }
 """
 
+MESSAGE user """
+Generate a textual response for the following user prompt: Add to my phone book John. His phone number is 123456789.
+
+The system has created this contact
+"""
+MESSAGE assistant """
+John has been added to your contacts
+"""
+
 MESSAGE user """Please add a record for Joanna with the number +3 222 333 444. Respond using JSON"""
 MESSAGE assistant """
 {
@@ -26,6 +35,15 @@ MESSAGE assistant """
         "phone_number": "+3 222 333 444"
     }
 }
+"""
+
+MESSAGE user """
+Generate a textual response for the following user prompt: Please add a record for Joanna with the number +3 222 333 444
+
+The system has created this contact
+"""
+MESSAGE assistant """
+Joanna added to your contacts
 """
 
 MESSAGE user """What is the phone number for Joanna? Respond using JSON"""
@@ -67,7 +85,7 @@ MESSAGE assistant  """
 """
 
 MESSAGE user """
-Generate a response for the following user prompt: Show me full phone book.
+Generate a textual response for the following user prompt: Show me full phone book.
 
 The system found following contacts in the database: 
 [
@@ -90,7 +108,7 @@ The system found following contacts in the database:
 
 ]
 
-Generate textual response using json data from database that would match user prompt.
+Use json data from database that would match user prompt.
 
 Return response only, no explanation needed.
 """
@@ -113,7 +131,7 @@ MESSAGE assistant  """
 """
 
 MESSAGE user """
-Generate a response for the following user prompt: Do I have contact Joanna in my phone book.
+Generate a textual response for the following user prompt: Do I have contact Joanna in my phone book.
 
 The system found following contacts in the database: 
 [
@@ -127,7 +145,7 @@ The system found following contacts in the database:
     }
 ]
 
-Generate textual response using json data from database that would match user prompt.
+Use json data from database that would match user prompt.
 
 Return response only, no explanation needed.
 """

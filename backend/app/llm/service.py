@@ -9,19 +9,33 @@ from app.contacts.service import ContactService
 from .repository import LLMRepository
 
 CREATE_ACTION_RESPONSE_PROMTP_TEMPLATE = """
-Generate a response for the following user prompt: {}
+Generate a textual response for the following user prompt: {}
+
+The system has created this contact
 """
 
-
 GET_ACTION_RESPONSE_PROMTP_TEMPLATE = """
-Generate a response for the following user prompt: {}
+Generate a textual response for the following user prompt: {}
 
 The system found following contacts in the database: 
 {}
 
-Generate textual response using json data from database that would match user prompt.
+Use json data from database that would match user prompt.
 
 Return response only, no explanation needed.
+"""
+
+ACTION_NOT_SUPPORTED_RESPONSE_PROMPT = """
+Generate a textual response for the following user prompt: {}
+
+This action is not supported by the system.
+Ask user to try again with a different action create contact, find contact, list contacts, update contact, delete contact.
+"""
+
+CONTACT_NOT_FOUND_RESPONSE_PROMPT = """
+Generate a textual response for the following user prompt: {}
+
+The system could not find any contacts with the given name inform user to try again with a different name.
 """
 
 
@@ -50,11 +64,15 @@ class LLMService:
         payload = response.get("payload")
 
         if action is None:
-            return "No action specified"
+            return await self._llm_repository.generate_response(
+                ACTION_NOT_SUPPORTED_RESPONSE_PROMPT.format(prompt)
+            )
 
         if action == "create":
             await self._contact_service.create(ContactIn.model_validate(payload))
-            return "Contact created"
+            return await self._llm_repository.generate_response(
+                CREATE_ACTION_RESPONSE_PROMTP_TEMPLATE.format(prompt)
+            )
 
         if action == "get":
             if payload and payload.get("name"):
@@ -67,16 +85,32 @@ class LLMService:
 
         if action == "update":
             if payload and payload.get("name"):
-                contacts_with_matching_name = await self._contact_service.get_by_name(payload.get("name"))
+                contacts_with_matching_name = await self._contact_service.get_by_name(
+                    payload.get("name")
+                )
+                if len(contacts_with_matching_name) == 0:
+                    return await self._llm_repository.generate_response(
+                        CONTACT_NOT_FOUND_RESPONSE_PROMPT.format(prompt)
+                    )
                 for contact in contacts_with_matching_name:
-                    await self._contact_service.update(contact.id, ContactIn.model_validate(payload))
+                    await self._contact_service.update(
+                        contact.id, ContactIn.model_validate(payload)
+                    )
                 return "Contact updated"
 
         if action == "delete":
             if payload and payload.get("name"):
-                contacts_with_matching_name = await self._contact_service.get_by_name(payload.get("name"))
+                contacts_with_matching_name = await self._contact_service.get_by_name(
+                    payload.get("name")
+                )
+                if len(contacts_with_matching_name) == 0:
+                    return await self._llm_repository.generate_response(
+                        CONTACT_NOT_FOUND_RESPONSE_PROMPT.format(prompt)
+                    )
                 for contact in contacts_with_matching_name:
                     await self._contact_service.delete(contact.id)
                 return "Contact deleted"
 
-        return "Action not supported"
+        return await self._llm_repository.generate_response(
+            ACTION_NOT_SUPPORTED_RESPONSE_PROMPT.format(prompt)
+        )
